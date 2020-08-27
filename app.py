@@ -230,16 +230,17 @@ def create_app(test_config=None):
             
     # Ends point for Actor_in_movie it has (movie_id and actor_id)
     @app.route('/casts', methods=['GET'])
-    @requires_auth('get:casts')
+    # @requires_auth('get:casts')
     def get_all_cast(payload):
-        data = Cast.query.all()
-        cast = list(map(Cast.get_cast, data))
-        if csting is None or len(cast) == 0:
-            abort(404)
-        return jsonify({
-            'success': True,
-            'cast': cast
-        })
+         data = Cast.query.all()
+         cast = list(map(Cast.get_cast, data))
+         if cast is None or len(cast) == 0:
+             abort(404)
+       
+         return jsonify({
+             'success': True,
+             'cast': cast
+             })
 
     # Error Handlers
     @app.errorhandler(404)
