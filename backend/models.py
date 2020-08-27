@@ -4,7 +4,7 @@ from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, create_eng
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import json
-
+import psycopg2
 
 database_path = os.environ['DATABASE_URL']
 conn = psycopg2.connect(database_path, sslmode='require')
