@@ -7,20 +7,7 @@ from flask_cors import CORS
 
 from backend.auth import AuthError, requires_auth
 from backend.models import db_drop_and_create_all, setup_db, migrate_db, Movie, Actor, Cast
-from settingup import casting_assistant_headers
-from settingup import casting_director_headers
-from settingup import executive_producer_headers
-from settingup import host_url
 
-
-executive_producer_token = executive_producer_headers
-
-def settingup_auth(role):
-    JWT = ''
-    if role == 'executive_producer':
-        JWT = executive_producer_token
-
-    return JWT
 
 
 app = Flask(__name__)
