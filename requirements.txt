@@ -16,4 +16,5 @@ typed-ast==1.4.1
 virtualenv==20.0.30
 virtualenv-clone==0.5.4
 wrapt==1.12.1
+Flask-Script==2.0.6
 zipp==3.1.0
