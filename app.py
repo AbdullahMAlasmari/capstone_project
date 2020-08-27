@@ -7,10 +7,22 @@ from flask_cors import CORS
 
 from backend.auth import AuthError, requires_auth
 from backend.models import db_drop_and_create_all, setup_db, migrate_db, Movie, Actor, Cast
+from settingup import casting_assistant_headers
+from settingup import casting_director_headers
+from settingup import executive_producer_headers
+from settingup import host_url
 
 
-# def create_app(test_config=None):
-    # create and configure the app
+executive_producer_token = executive_producer_headers
+
+def settingup_auth(role):
+    JWT = ''
+    if role == 'executive_producer':
+        JWT = executive_producer_token
+
+    return JWT
+
+
 app = Flask(__name__)
 setup_db(app)
 CORS(app)
@@ -36,7 +48,7 @@ def hello():
 
 @app.route('/movies', methods=['GET'])
 @requires_auth('get:movies')
-def get_all_movie(jwt):
+def get_all_movie(payload):
     data = Movie.query.all()
     movie = list(map(Movie.get_movie, data))
     if movie is None or len(movie) == 0:
@@ -77,7 +89,7 @@ def add_movie(payload):
 
 @app.route('/movies/<int:movie_id>', methods=['PATCH'])
 @requires_auth('patch:movies')
-def update_movies_title(jwt, movie_id):
+def update_movies_title(payload, movie_id):
     movie = Movie.query.filter_by(id=movie_id).first()
     data = request.get_json()
 
@@ -104,7 +116,7 @@ def update_movies_title(jwt, movie_id):
 # DELETE /movies/:id - Requires delete:movies permission
 @app.route('/movies/<int:movie_id>', methods=['DELETE'])
 @requires_auth('delete:movies')
-def delete_movies(jwt, movie_id):
+def delete_movies(payload, movie_id):
     movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
     if movie is None:
         abort(404)
@@ -123,7 +135,7 @@ def delete_movies(jwt, movie_id):
 # Ends point for Actors
 @app.route('/actors', methods=['GET'])
 @requires_auth('get:actors')
-def getactors(jwt):
+def getactors(payload):
     data = Actor.query.all()
     actors = list(map(Actor.get_actor, data))
 
@@ -138,7 +150,7 @@ def getactors(jwt):
 
 @app.route('/actors/<int:id>', methods=['GET'])
 @requires_auth('get:actors')
-def get_actor(jwt, id):
+def get_actor(payload, id):
     actor = Actor.query.filter(Actor.id == id).one_or_none()
     actor_formatted = actor.short()
     if actor is None:
@@ -151,7 +163,7 @@ def get_actor(jwt, id):
 
 @app.route('/actors', methods=['POST'])
 @requires_auth('post:actors')
-def add_actor(jwt):
+def add_actor(payload):
     data = request.get_json()
 
     if data is None:
@@ -178,7 +190,7 @@ def add_actor(jwt):
 
 @app.route('/actors/<actor_id>', methods=['PATCH'])
 @requires_auth('patch:actors')
-def update_actor(jwt, actor_id):
+def update_actor(payload, actor_id):
 
     actor = Actor.query.filter_by(id = actor_id).one_or_none()
     if actor is None:
@@ -210,7 +222,7 @@ def update_actor(jwt, actor_id):
 
 @app.route('/actors/<actor_id>', methods=['DELETE'])
 @requires_auth('delete:actors')
-def deleteActor(jwt, actor_id):
+def deleteActor(payload, actor_id):
     actor = Actor.query \
             .filter_by(id=actor_id) \
             .one_or_none()
@@ -228,19 +240,6 @@ def deleteActor(jwt, actor_id):
     except Exception as e:
         abort(422)
         
-# # Ends point for Actor_in_movie it has (movie_id and actor_id)
-# @app.route('/casts', methods=['GET'])
-# # @requires_auth('get:casts')
-# def get_all_cast(payload):
-#         data = Cast.query.all()
-#         cast = list(map(Cast.get_cast, data))
-#         if cast is None or len(cast) == 0:
-#             abort(404)
-    
-#         return jsonify({
-#             'success': True,
-#             'cast': cast
-#             })
 
 # Error Handlers
 @app.errorhandler(404)
@@ -286,10 +285,3 @@ def unprocessable(error):
 @app.errorhandler(AuthError)
 def authentication(error):
     return jsonify(error.error), 401
-    
-    # return app
-
-# app = create_app()
-
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=8080, debug=True)

@@ -113,16 +113,16 @@ export API_AUDIENCE="capstone" # Create an API in Auth0
 
 Create three roles for users under `Users & Roles` section in Auth0
  Create new API permissions:
-    - `get:movie`
-    - `post:movie`
-    - `patch:movie`
-    - `delete:movie`
-    - `get:actor`
-    - `post:actor`
-    - `patch:actor`
-    - `delete:actor`
-    - `get:show`
-    - `post:show`
+    - `get:movies`
+    - `post:movies`
+    - `patch:movies`
+    - `delete:movies`
+    - `get:actors`
+    - `post:actors`
+    - `patch:actors`
+    - `delete:actors`
+    - `get:cast`
+    - `post:cast`
 
  Create new roles for:
     - Casting Assistant
@@ -363,3 +363,71 @@ Here is a returned sample fromat
     "success": true
 }
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+curl --location --request GET 'https://capstonefs.herokuapp.com' \
+--header 'Authorization: Bearer access_token' \
+--header 'Content-Type: application/json' \
+--data-raw '
+    {
+        "movie_genrs": "action",
+        "release_date": 1969,
+        "title": "Extreme KILLER"
+    }
+'
+
+
+
+
+test horku in postman for movies:
+
+curl --location --request GET 'https://capstonefs.herokuapp.com/movies' \
+--header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkZ4dHhUY21EdGdPNUxVeEVmQ1F2cCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGRwcmVqMi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWYzODIwY2EzOGQxYTIwMDZkMjEzNWZhIiwiYXVkIjoibW92aWVhcGkiLCJpYXQiOjE1OTg1MjAxMjksImV4cCI6MTU5ODYwNjUyOSwiYXpwIjoiaDM5NmI2VW9MTlZLS2lYbFgwUnUxbmVQN3dhWG5tNlMiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.mdTs_8DheLZViDmqNGZiQdbz2aiiLfAhoJ0GYJLn9v4SjuU9z7J0ulrsBChxEF6bVQ2JTZ3kK1t0TjmM05SRg21wmhkDCLeJNY6pUV8GSMbflfdw8t2Y0woW8jVIC8d1tBhixN5oRQ1hQAbTPVkTwZVHw_HfSMMwvqR4YuCeZvJJcQig0TWVx7xQrK304YA4YU8NMlxtpjg6-mBrkAyJuYfyrxhPNamou2Ff6GS89szlAbs7PEs4rV9DasIGdI_adP5CsYnK6iTFNs1UB4ykWwXk3XT0_jS2Zx-5Y3HyCbAic6Cx4UKenEMKM8EEGDMUGYocUny8052aDTbh8jckOw' \
+--header 'Content-Type: application/json' \
+--data-raw '
+    {
+        "movie_genrs": "action",
+        "release_date": 1969,
+        "title": "Extreme KILLER"
+    }
+'
+
+test horku in postman for actors
+access_token replace .........
+
+curl --location --request POST 'https://capstonefs.herokuapp.com/actors' \
+--header 'Authorization: Bearer access_token' \
+--header 'Content-Type: application/json' \
+--data-raw '
+    {
+        "movie_genrs": "action",
+        "release_date": 1969,
+        "title": "Extreme KILLER"
+    }
+'
+

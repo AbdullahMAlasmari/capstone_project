@@ -45,7 +45,8 @@ def settingup_auth(role):
 
 class CastingAgencyTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app()
+        self.app = app 
+        # create_app()
         self.client = self.app.test_client
         database_name = "IMDB_Test"
         self.database_path = "postgres://{}:{}@{}/{}".format(
@@ -311,54 +312,12 @@ class CastingAgencyTestCase(unittest.TestCase):
         # self.assertEqual(data['movie']['title'], 'updated_movie')
 
     # def test_401_update_movie_casting_assistant(self):
-    #     movie = Movie(title='first Name')
-    #     movie.insert()
-    #     res = self.client().patch('/movie/'+str(movie.id),
-    #                               json={'title': 'updated_movie'},
-    #                               headers=settingup_auth('casting_assistant'))
-    #     self.assertEqual(res.status_code, 401)
-
-
-    # def test_404_update_movie_fail(self):
-        # movie = Movie('100 Streets', 'action', 2016)
-        # movie.insert()
-
-        # res = self.client().patch('/movies/10', json={},
-        #                           headers=settingup_auth('executive_producer'))
-        # data = json.loads(res.data)
-        # self.assertEqual(res.status_code, 404)
-        # self.assertEqual(data['success'], False)
-        # self.assertEqual(data['message'], 'resource not found')
-
-    # def test_delete_movie_executive_producer(self):
-    #     movie = Movie(title='first Name')
-    #     movie.insert()
-    #     res = self.client().delete('/movie/'+str(movie.id),
-    #                                headers=settingup_auth('executive_producer'))
-    #     data = json.loads(res.data)
-
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertEqual(int(data['deleted']), movie.id)
-
-    # def test_delete_movie_casting_assistant(self):
-    #     movie = Movie(title='first Name')
-    #     movie.insert()
-
-    #     res = self.client().delete('/movie/'+str(movie.id),
-    #                                headers=settingup_auth('casting_assistant'))
-    #     self.assertEqual(res.status_code, 401)
-
-
-
-    # def test_401_delete_movie_fail(self):
-    #     movie = Movie(title='first Name')
-    #     movie.insert()
-
-    #     res = self.client().delete('/movie/'+str(movie.id),
-    #                                  headers=settingup_auth(''))
-    #     self.assertEqual(res.status_code, 401)
-
+        movie = Movie(title='first Name')
+        movie.insert()
+        res = self.client().patch('/movies/'+str(movie.id),
+                                  json={'title': 'updated_movie'},
+                                  headers=settingup_auth('casting_assistant'))
+        self.assertEqual(res.status_code, 401)
 
 
 
