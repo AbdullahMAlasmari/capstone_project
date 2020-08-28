@@ -101,7 +101,7 @@ Establish three roles for users under `Users & Roles` section in Auth0
 # API Documentation
 
 -   Base URL: https://capstonefs.herokuapp.com/
--   Local Base URL: The local app is hosted at the default http://0.0.0.0:8080/
+-   Local Base URL: The local app is hosted at the default http://127.0.0.1:5000/
 
 
 **Base URL**: Base URL: Actually, this app can be run locally and it is hosted also as a base URL using heroku (the heroku URL is https://capstonefs.herokuapp.com/).
