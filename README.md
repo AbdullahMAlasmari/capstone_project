@@ -1,4 +1,4 @@
-# The Casting Agency models 
+# The Casting Agency models
 A company that is responsible for creating movies and managing and assigning actors to those movies. You are an Executive Producer within the company and are creating a system to simplify and streamline your process.
 # _So let's get started!_
 
@@ -53,7 +53,7 @@ python app.py
 - POST /actors and /movies and
 - DELETE /actors/id and /movies/id
 - PATCH /actors/id and /movies/id
-  
+
 ### Roles
 - Executive Producer
   - _All permissions a Casting Director has and_
@@ -151,7 +151,7 @@ Also, I have included a Postman collection FSND-Capstone.postman_collection.json
 Contains the unique id of the movie, the movie's title, the movie's genre, and the movies release date.
 
 ### Example
-### GET http://0.0.0.0:8080/movies/1
+### GET http://127.0.0.1:5000/movies/1
 ```
     {
         "id": 1,
@@ -160,21 +160,21 @@ Contains the unique id of the movie, the movie's title, the movie's genre, and t
         "title": "title"
     }
 ```
-### POST: http://0.0.0.0:8080/movies/7
+### POST: http://127.0.0.1:5000/movies/7
 ```
 {
   "added": 7,
   "success": true
 }
 ```
-### PATCH: http://0.0.0.0:8080/movies/2
+### PATCH: http://127.0.0.1:5000/movies/2
 ```
 {
   "edited": 2,
   "success": true
 }
 ```
-### DELETE: http://0.0.0.0:8080/movies/7
+### DELETE: http://127.0.0.1:5000/movies/7
 ```
 {
   "deleted": 7,
@@ -183,7 +183,7 @@ Contains the unique id of the movie, the movie's title, the movie's genre, and t
 ```
 ## The actor object
 
-### GET http://0.0.0.0:8080/actors
+### GET http://127.0.0.1:5000/actors
 ```
 {
   "actors": [
@@ -210,7 +210,7 @@ Contains the unique id of the movie, the movie's title, the movie's genre, and t
     "success": true
 }
 ```
-### GET: http://0.0.0.0:8080/actors/2
+### GET: http://127.0.0.1:5000/actors/2
 ```
 {
   "actor": {
@@ -222,7 +222,7 @@ Contains the unique id of the movie, the movie's title, the movie's genre, and t
   "success": true
 }
 ```
-### POST: http://0.0.0.0:8080/actors
+### POST: http://127.0.0.1:5000/actors
 ```
 {
   "added": 5,
@@ -230,7 +230,7 @@ Contains the unique id of the movie, the movie's title, the movie's genre, and t
 }
 ```
 
-# Heroku Tset In postman
+# Heroku Test In postman
 
 ### DELETE: https://capstonefs.herokuapp.com/movies/2
 
@@ -254,3 +254,18 @@ Contains the unique id of the movie, the movie's title, the movie's genre, and t
 }
 ```
 
+
+### GET: https://capstonefs.herokuapp.com/movies
+```
+{
+    "movie": [
+        {
+            "id": 1,
+            "movie_genrs": "action",
+            "release_date": 1969,
+            "title": "Extreme Measures"
+        }
+    ],
+    "success": true
+}
+```

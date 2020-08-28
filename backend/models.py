@@ -6,17 +6,18 @@ from flask_migrate import Migrate
 import json
 import psycopg2
 
-database_path = os.environ['DATABASE_URL']
-conn = psycopg2.connect(database_path, sslmode='require')
+# database_path = os.environ['DATABASE_URL']
+# conn = psycopg2.connect(database_path, sslmode='require')
 
 
-# database_name = "imdb"
-# database_path = "postgres://{}:{}@{}/{}".format(
-#     'postgres',
-#     'Fall2018',
-#     'localhost:5432',
-#     database_name
-#     )
+
+database_name = "imdb"
+database_path = "postgres://{}:{}@{}/{}".format(
+    'postgres',
+    'Fall2018',
+    'localhost:5432',
+    database_name
+    )
 
 '''
 database_path = os.environ['DATABASE_URL']
