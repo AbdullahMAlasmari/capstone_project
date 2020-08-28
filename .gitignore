@@ -2,7 +2,7 @@
 __pycache__
 venv
 *\venv
-backend/migrations/
+backend\migrations\
 # OS generated files #
 ######################
 .DS_Store
