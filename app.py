@@ -7,8 +7,8 @@ from flask_cors import CORS
 
 from backend.auth import AuthError, requires_auth
 from backend.models import db_drop_and_create_all, setup_db, migrate_db, Movie, Actor, Cast
-
-
+ 
+# tet
 
 app = Flask(__name__)
 setup_db(app)
