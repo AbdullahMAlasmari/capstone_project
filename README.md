@@ -1,5 +1,6 @@
 # The Casting Agency models
 A company that is responsible for creating movies and managing and assigning actors to those movies. You are an Executive Producer within the company and are creating a system to simplify and streamline your process.
+
 # _So let's get started!_
 
 # Installing key Dependencies
@@ -33,9 +34,9 @@ python test_app.py
 - From within the root directory, first ensure you're working with your created
 venv. To run the server, execute the following:
 ```bash
-set FLASK_APP=app
-set FLASK_DEBUG=true
-set FLASK_ENV=development
+export FLASK_APP=app.py
+export FLASK_DEBUG=true
+export FLASK_ENV=development
 python app.py
 ```
 ## Casting Agency Specifications

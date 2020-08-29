@@ -1,26 +1,44 @@
 import os
 import sys
 from sqlalchemy import exc
-from flask import Flask, request, jsonify, abort
+# from flask import Flask, request, jsonify, abort
+from flask import (Flask,
+                   request,
+                   jsonify,
+                   abort
+                   )
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 from backend.auth import AuthError, requires_auth
-from backend.models import db_drop_and_create_all, setup_db, migrate_db, Movie, Actor, Cast
- 
-# tet
+# from backend.models import db_drop_and_create_all,
+# setup_db, migrate_db, Movie, Actor, Cast
+from backend.models import (db_drop_and_create_all,
+                            setup_db,
+                            migrate_db,
+                            Movie,
+                            Actor,
+                            Cast
+                            )
 
+# def create_app(test_config=None):
 app = Flask(__name__)
 setup_db(app)
 CORS(app)
 
 db_drop_and_create_all()
 
+
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
+    response.headers.add(
+        'Access-Control-Allow-Headers',
+        'Content-Type,Authorization,true')
+    response.headers.add(
+        'Access-Control-Allow-Methods',
+        'GET,PATCH,POST,DELETE,OPTIONS')
     return response
+
 
 @app.route('/')
 def hello():
@@ -32,6 +50,7 @@ def hello():
 # Movies Endpoints
 # @app.route('/movies', methods=['GET'])
 # @requires_auth('get:movies')
+
 
 @app.route('/movies', methods=['GET'])
 @requires_auth('get:movies')
@@ -52,7 +71,7 @@ def get_all_movie(payload):
 def add_movie(payload):
 
     data = request.get_json()
-    
+
     if not ('title' in data):
         abort(404)
 
@@ -61,11 +80,13 @@ def add_movie(payload):
     new_release_date = data.get('release_date', None)
 
     # i want body to have title, release_date, and movie_genrs
-    
+
     try:
-        new_movie = Movie(title=title, release_date=new_release_date, movie_genrs=new_movie_genrs)
+        new_movie = Movie(
+            title=title, release_date=new_release_date,
+            movie_genrs=new_movie_genrs)
         new_movie.insert()
-    
+
         return jsonify({
             'success': True,
             'added': [new_movie.get_movie()]
@@ -73,6 +94,7 @@ def add_movie(payload):
 
     except Exception:
         abort(422)
+
 
 @app.route('/movies/<int:movie_id>', methods=['PATCH'])
 @requires_auth('patch:movies')
@@ -95,10 +117,9 @@ def update_movies_title(payload, movie_id):
             'success': True,
             'edited': movie.id
         }), 200
-    
     except(TypeError, KeyError):
         abort(404)
-    
+
 
 # DELETE /movies/:id - Requires delete:movies permission
 @app.route('/movies/<int:movie_id>', methods=['DELETE'])
@@ -135,6 +156,7 @@ def getactors(payload):
         'actors': actors
     })
 
+
 @app.route('/actors/<int:id>', methods=['GET'])
 @requires_auth('get:actors')
 def get_actor(payload, id):
@@ -147,6 +169,7 @@ def get_actor(payload, id):
         "success": True,
         "actor": actor_formatted
     })
+
 
 @app.route('/actors', methods=['POST'])
 @requires_auth('post:actors')
@@ -175,11 +198,12 @@ def add_actor(payload):
     except Exception:
         abort(404)
 
+
 @app.route('/actors/<actor_id>', methods=['PATCH'])
 @requires_auth('patch:actors')
 def update_actor(payload, actor_id):
 
-    actor = Actor.query.filter_by(id = actor_id).one_or_none()
+    actor = Actor.query.filter_by(id=actor_id).one_or_none()
     if actor is None:
         abort(404)
     body = request.get_json()
@@ -193,8 +217,8 @@ def update_actor(payload, actor_id):
 
     if new_name is not None:
         actor.name = new_name
-    if  new_gender is not None:
-        actor.gender =  new_gender
+    if new_gender is not None:
+        actor.gender = new_gender
     if new_age:
         actor.age = new_age
 
@@ -206,6 +230,7 @@ def update_actor(payload, actor_id):
         })
     except Exception:
         abort(422)
+
 
 @app.route('/actors/<actor_id>', methods=['DELETE'])
 @requires_auth('delete:actors')
@@ -226,7 +251,7 @@ def deleteActor(payload, actor_id):
         })
     except Exception as e:
         abort(422)
-        
+
 
 # Error Handlers
 @app.errorhandler(404)
@@ -237,6 +262,7 @@ def page_not_found(error):
         "message": "resource not found"
         }), 404
 
+
 @app.errorhandler(401)
 def unauthorized(error):
     return jsonify({
@@ -244,7 +270,8 @@ def unauthorized(error):
         "error": 401,
         "message": "Unauthorized"
         }), 401
-        
+
+
 @app.errorhandler(400)
 def bad_request(error):
     return jsonify({
@@ -252,6 +279,7 @@ def bad_request(error):
         "error": 400,
         "message": "Bad Request"
         }), 400
+
 
 @app.errorhandler(500)
 def InternalServerError(error):
@@ -261,12 +289,14 @@ def InternalServerError(error):
         "message": "Internal Server Error"
         }), 500
 
+
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
         'message': 'Unprocessable Entity',
         'success': False
     }), 422
+
 
 # AuthError defined in auth.py
 @app.errorhandler(AuthError)

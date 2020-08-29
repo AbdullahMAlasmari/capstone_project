@@ -36,16 +36,11 @@ def settingup_auth(role):
         JWT = executive_producer_token
 
     return JWT
-    
-    #  {
-    #     "Content-Type": "application/json",
-    #     'Authorization': 'Bearer {}'.format(JWT)
-    # }
 
 
 class CastingAgencyTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = app 
+        self.app = app
         # create_app()
         self.client = self.app.test_client
         database_name = "IMDB_Test"
@@ -56,7 +51,6 @@ class CastingAgencyTestCase(unittest.TestCase):
             database_name
         )
         setup_db(self.app)
-        #, self.database_path)
 
         self.new_actor = {
             "name": "Test Abul",
@@ -72,11 +66,9 @@ class CastingAgencyTestCase(unittest.TestCase):
             self.db = SQLAlchemy()
             self.db.init_app(self.app)
             self.db.create_all()
-            
+
     def tearDown(self):
         pass
-    
-    # test get actor end point
 
     def test_get_all_actor_casting_assistant(self):
         res = self.client().get('/actors',
@@ -86,7 +78,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['actors']))
-
 
     def test_get_all_actor_casting_director(self):
         res = self.client().get('/actors',
@@ -122,7 +113,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
-        
     def test_404_create_actor_unsuccessful(self):
         res = self.client().post('/actors', json={},
                                  headers=settingup_auth('casting_director'))
@@ -147,7 +137,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(actor.get_actor()['age'], 28)
-    
+
     def test_update_actor_executive_producer(self):
         actor = Actor('Alex Tree', 77, 'M')
         actor.insert()
@@ -157,7 +147,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(actor.age, 77)
-
 
     def test_404_update_actor_unsuccessful(self):
         res = self.client().patch('/actors/2000', json={},
@@ -189,21 +178,21 @@ class CastingAgencyTestCase(unittest.TestCase):
     def test_drop_actor_executive_producer(self):
         actor = Actor('abdul', 30, 'M')
         actor.insert()
-        res = self.client().delete('/actors/'+str(actor.id),
-                                   headers=settingup_auth('executive_producer'))
+        res = self.client().delete(
+            '/actors/'+str(actor.id),  headers=settingup_auth(
+                'executive_producer'))
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(int(data['delete']), actor.id)
 
-
     def test_401_drop_actor_unsuccessful(self):
         actor = Actor('ali', 30, 'M')
         actor.insert()
-        res = self.client().delete('/actors/'+str(actor.id), headers=settingup_auth(''))
+        res = self.client().delete(
+            '/actors/'+str(actor.id), headers=settingup_auth(''))
         self.assertEqual(res.status_code, 401)
 
-    
     # Movie UnitTest
 
     def test_get_all_movie_casting_assistant(self):
@@ -212,7 +201,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-
 
     def test_get_all_movie_executive_producer(self):
         res = self.client().get('/movies',
@@ -229,7 +217,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
 
     def test_401_get_all_movie_unsucessful(self):
-        res = self.client().get('/movies', headers=settingup_auth('new_casting'))
+        res = self.client().get('/movies',
+                                headers=settingup_auth('new_casting'))
         self.assertEqual(res.status_code, 401)
 
     def test_create_movie_executive_producer(self):
@@ -259,7 +248,6 @@ class CastingAgencyTestCase(unittest.TestCase):
             self.assertEqual(res.status_code, 200)
             self.assertEqual(data['success'], True)
 
-
     def test_401_create_movies_success(self):
         res = self.client().post('/movies', json=self.new_movie,
                                  headers=settingup_auth('executive_producer'))
@@ -268,7 +256,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         if(res.status_code == 200):
             self.assertEqual(res.status_code, 200)
             self.assertEqual(data['success'], True)
-        else: 
+        else:
             self.assertEqual(res.status_code, 401)
             self.assertEqual(data['success'], False)
 
@@ -282,13 +270,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         }
 
         res = self.client().patch('/movies/'+str(movie.id),
-                                  json= movieUpdate, 
+                                  json=movieUpdate,
                                   headers=settingup_auth('casting_director'))
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['edited'],2)
+        self.assertEqual(data['edited'], 2)
 
     def test_update_movie_executive_producer(self):
         movie = Movie.query.filter_by(id=2).first()
@@ -298,7 +286,6 @@ class CastingAgencyTestCase(unittest.TestCase):
             'movie_genrs':  movie.movie_genrs,
             'release_date': movie.release_date
         }
-    
 
         # movie.update()
 
@@ -318,7 +305,6 @@ class CastingAgencyTestCase(unittest.TestCase):
                                   json={'title': 'updated_movie'},
                                   headers=settingup_auth('casting_assistant'))
         self.assertEqual(res.status_code, 401)
-
 
 
 # Make the tests conveniently executable

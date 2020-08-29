@@ -3,11 +3,16 @@ from functools import wraps
 from urllib.request import urlopen
 from jose import jwt
 from flask import request, _request_ctx_stack
+import os
 
-
-AUTH0_DOMAIN = 'dev-jddprej2.us.auth0.com'
+# AUTH0_DOMAIN = 'dev-jddprej2.us.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'movieapi'
+# API_AUDIENCE = 'movieapi'
+
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+# ALGORITHMS = os.environ.get['ALGORITHMS']
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
+
 
 # AuthError Exception
 '''
@@ -71,24 +76,7 @@ def check_permissions(permission, payload):
             'description': 'Permission not found.'
         }, 401)
     return True
-    
-# raise Exception
 
-def requires_auth(permission=''):
-    def requires_auth_decorator(f):
-        @wraps(f)
-        def wrapper(*args, **kwargs):
-            token = get_token_auth_header()
-            try:
-                payload = verify_decode_jwt(token)
-            except Exception:
-                abort(401)
-
-            check_permissions(permission, payload)
-            return f(payload, *args, **kwargs)
-
-        return wrapper
-    return requires_auth_decorator
 
 def verify_decode_jwt(token):
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
